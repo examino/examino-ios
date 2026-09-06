@@ -14,15 +14,6 @@ on:
 
 jobs:
   # ── 模擬器構建(無需簽名,驗證編譯 + 產出 .app)──────────────────────────
-  # 診斷:驗證 runner 可用性(ubuntun 免費;若此 job 能跑而 macos job 無 jobs,
-  # 則為 macOS runner 計費/可用性問題)
-  diagnose:
-    name: Diagnose runner availability
-    runs-on: ubuntu-latest
-    steps:
-      - name: runner works
-        run: echo "ubuntu-latest runner OK"
-
   build-simulator:
     name: Build (Simulator)
     runs-on: macos-14

@@ -64,7 +64,7 @@ Examino/
 
 `.github/workflows/ios-build.yml` 提供兩個 job:
 
-1. **build-simulator**(預設執行):macOS runner 上 `xcodebuild` 編譯模擬器版,產出 `Examino-simulator.app` 工件(artifact),用於驗證代碼可編譯、可在模擬器安裝。
+1. **build-simulator**(預設執行):macOS runner 上 `xcodebuild` 編譯模擬器版,產出 `Examino-simulator.app` 工件(artifact),用於驗證代碼可編譯、可在模擬器安裝。✅ 已在真实 Xcode 環境通過驗證。
 2. **build-ipa**(可選):配置 Apple Developer 證書後自動產出真機安裝用的 `Examino.ipa`(ad-hoc)。
 
 使用步驟:
@@ -80,6 +80,8 @@ git init && git add . && git commit -m "Examino iOS"
 - 在 Mac 上:`xcrun simctl install booted Examino-simulator.app`
 
 真機 .ipa(需要 Apple Developer 帳號):
+
+> 先到 repo Settings → Secrets and variables → Actions → **Variables** 添加 `BUILD_IPA=true`,否則 build-ipa job 會自動跳過。
 
 1. 在 repo Settings → Secrets and variables → Actions 添加:
    - `IOS_CERT_BASE64`:發佈/開發證書 p12 的 base64(`base64 -i cert.p12 -o cert.b64` 後複製內容)
