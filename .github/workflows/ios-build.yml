@@ -1,5 +1,8 @@
 name: iOS Build
 
+permissions:
+  contents: write
+
 on:
   push:
     branches: [main, master]
@@ -65,6 +68,17 @@ jobs:
           name: Examino-simulator.app
           path: DerivedData/Build/Products/Debug-iphonesimulator/Examino.app
           if-no-files-found: error
+
+      # 診斷:失敗時把構建日誌寫回倉庫(ci-error.txt),便於無日誌權限時排查
+      - name: Report failure log to repo
+        if: failure()
+        run: |
+          head -c 16000 build.log > ci-error.txt 2>/dev/null || true
+          git config user.name "ci-bot"
+          git config user.email "ci@examino.local"
+          git add ci-error.txt
+          git commit -q -m "ci: capture build log [skip ci]" || true
+          git push -q origin main
 
   # ── 真機 .ipa(可選:需要 Apple Developer 證書,否則自動跳過)──────────────
   # 需要的 GitHub Secrets:
