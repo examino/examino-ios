@@ -27,6 +27,7 @@ jobs:
 
       - name: Build for iOS Simulator
         run: |
+          set -o pipefail
           xcodebuild \
             -project Examino.xcodeproj \
             -scheme Examino \
@@ -35,7 +36,20 @@ jobs:
             -destination 'generic/platform=iOS Simulator' \
             -derivedDataPath DerivedData \
             CODE_SIGNING_ALLOWED=NO \
-            build
+            build 2>&1 | tee build.log | tail -80
+
+      - name: Show scheme / target info
+        run: |
+          xcodebuild -project Examino.xcodeproj -list
+        continue-on-error: true
+
+      - name: Upload build log (keep on failure)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: build.log
+          if-no-files-found: ignore
 
       - name: Upload .app
         uses: actions/upload-artifact@v4
