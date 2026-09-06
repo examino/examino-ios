@@ -18,7 +18,15 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Select Xcode
-        run: sudo xcode-select -s /Applications/Xcode_15.4.app
+        run: |
+          # 動態選擇鏡像上可用的 Xcode(避免硬編碼版本不存在)
+          echo "Installed Xcode:"
+          ls /Applications | grep -E '^Xcode' || true
+          XCODE=$(ls /Applications | grep -E '^Xcode[0-9._]+\.app$' | sort -V | tail -1)
+          if [ -n "$XCODE" ]; then
+            sudo xcode-select -s "/Applications/$XCODE"
+          fi
+          xcodebuild -version
 
       - name: Show toolchain
         run: |
