@@ -90,6 +90,7 @@ jobs:
           git push -q origin main
 
   # ── 真機 .ipa(可選:需要 Apple Developer 證書,否則自動跳過)──────────────
+  # 啟用方式:Settings → Secrets and variables → Actions → Variables 添加 BUILD_IPA=true
   # 需要的 GitHub Secrets:
   #   IOS_CERT_BASE64       p12 證書的 base64 字串
   #   IOS_CERT_PASSWORD     p12 密碼
@@ -98,7 +99,8 @@ jobs:
   build-ipa:
     name: Build IPA (Signed)
     runs-on: macos-14
-    if: ${{ secrets.IOS_CERT_BASE64 != '' }}
+    # job 級 if 不能讀 secrets;改用 repo variable 開關:Settings → Variables → BUILD_IPA=true
+    if: ${{ vars.BUILD_IPA == 'true' }}
     needs: build-simulator
     steps:
       - uses: actions/checkout@v4
