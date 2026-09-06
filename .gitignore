@@ -1,0 +1,18 @@
+# Xcode
+DerivedData/
+build/
+*.xcuserstate
+xcuserdata/
+*.xcworkspace/xcuserdata/
+
+# macOS
+.DS_Store
+
+# 憑證相關(切勿提交)
+*.p12
+*.mobileprovision
+*.keychain
+
+# 媒體
+*.png
+!Examino/Assets.xcassets/**/*.png
